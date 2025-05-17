@@ -30,7 +30,7 @@ class CategoryController extends Controller
     public function store(Request $request)
     {
         Category::create($request->only(['name','slug']));
-        redirect()->to('/categories');
+        return redirect()->to('/categories');
     }
 
     /**

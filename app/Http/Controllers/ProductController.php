@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 
 class ProductController extends Controller
 {
@@ -13,7 +14,11 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $products = Product::all();
+        $products = Cache::get("products");
+        if($products === null) {
+            $products = Product::all();
+            Cache::set("products",$products, 30);
+        }
         $categories = Category::all();
         return view('products.index',['products'=>$products,'categories'=>$categories]);
     }
