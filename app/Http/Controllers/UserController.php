@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\UserRegister;
 use App\Models\User;
 
 class UserController extends Controller
@@ -20,7 +21,8 @@ class UserController extends Controller
 
     public function store()
     {
-        User::create(request()->only(['name', 'email', 'password']));
+        $user = User::create(request()->only(['name', 'email', 'password']));
+        event(new UserRegister($user));
         return redirect()->to('/users');
     }
 
